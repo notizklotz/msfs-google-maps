@@ -180,3 +180,7 @@ input::-webkit-inner-spin-button {
         width: 100%;
     }
 }
+
+.layer-switcher {
+    font-family: Arial, Helvetica, sans-serif;
+}

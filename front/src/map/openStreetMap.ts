@@ -9,6 +9,12 @@ import VectorSource from 'ol/source/Vector';
 import { fromLonLat } from 'ol/proj';
 import { degToRad } from '../lib/utils';
 import LineString from 'ol/geom/LineString';
+import { XYZ } from 'ol/source';
+import LayerSwitcher from 'ol-layerswitcher';
+import 'ol/ol.css';
+import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+import LayerGroup from 'ol/layer/Group';
+import { ScaleLine } from 'ol/control';
 
 export default class OpenStreetMap extends BaseMap {
     map!: Map;
@@ -58,18 +64,75 @@ export default class OpenStreetMap extends BaseMap {
     }
 
     createMap() {
-        this.map = new Map({
-            target: 'map',
+        const baseLayers = new LayerGroup({
+            properties: {
+                title: 'Base maps'
+            },
             layers: [
                 new TileLayer({
+                    properties: {
+                        title: 'OpenStreetMap',
+                        type: 'base'
+                    },
                     source: new OSM(),
+                }), new TileLayer({
+                    properties: {
+                        title: 'Stadia Outdoors',
+                        type: 'base'
+                    },
+                    source: new XYZ({
+                        url: 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}@2x.png',
+                        attributions: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, ' +
+                            '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> ' +
+                            '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+                        tilePixelRatio: 2,
+                        maxZoom: 20
+                    }),
+                    visible: false
                 }),
-            ],
+                new TileLayer({
+                    properties: {
+                        title: 'OpenTopoMap',
+                        type: 'base'
+                    },
+                    source: new XYZ({
+                        url: 'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                        attributions: 'Kartendaten: © OpenStreetMap-Mitwirkende, SRTM ' +
+                            '| Kartendarstellung: © OpenTopoMap (CC-BY-SA)',
+                        maxZoom: 17,
+                    }),
+                    visible: false,
+                }),
+                new TileLayer({
+                    properties: {
+                        title: 'Swisstopo (Switzerland only)',
+                        type: 'base'
+                    },
+                    source: new XYZ({
+                        url: `https://wmts{0-9}.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`,
+                        attributions: 'Map data: &copy; <a href="https://www.geo.admin.ch/en/geo-services/geo-services/terms-of-use.html">Swisstopo</a>',
+                    }),
+                    visible: false,
+                }),
+            ]
+        });
+
+        this.map = new Map({
+            target: 'map',
+            layers: baseLayers,
             view: new View({
                 center: [0, 0],
-                zoom: 3,
+                zoom: 12,
             }),
         });
+
+        const layerSwitcher = new LayerSwitcher({
+            reverse: false,
+            groupSelectStyle: 'group'
+        });
+        this.map.addControl(layerSwitcher);
+
+        this.map.addControl(new ScaleLine())
     }
 
     createPopup() {
@@ -220,6 +283,6 @@ export default class OpenStreetMap extends BaseMap {
     }
 
     toggleRoute() {
-        this.routeLayer.setVisible(this.showRouteOn ? true : false);
+        this.routeLayer.setVisible(this.showRouteOn);
     }
 }

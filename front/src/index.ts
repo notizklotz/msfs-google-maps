@@ -7,7 +7,6 @@ import checkRelease from './lib/checkRelease';
 import { VERSION } from './lib/constants';
 import type BaseMap from './map/baseMap';
 import { Mode } from './lib/enums';
-import 'ol/ol.css';
 import OpenStreetMap from './map/openStreetMap';
 import toggleTopnav from './lib/topnav';
 import { getMode } from './lib/storage';
