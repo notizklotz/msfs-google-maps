@@ -30,7 +30,7 @@ export default class GoogleMap extends BaseMap {
                 lat: 0,
                 lng: 0,
             },
-            zoom: 3,
+            zoom: 11,
             mapTypeId: 'terrain',
         };
         this.map = new google.maps.Map(document.getElementById('map')!, mapOptions);

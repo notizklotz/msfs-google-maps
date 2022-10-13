@@ -15,6 +15,24 @@ export function getApiKey() {
     }
 }
 
+export async function getMaptilerConfig(): Promise<MaptilerConfig> {
+    try {
+        const result = await fetch(API_URL + '/maptiler_config');
+        if (result.ok) {
+            return await result.json();
+        } else {
+            return {};
+        }
+    } catch (e) {
+        return {};
+    }
+}
+
+export interface MaptilerConfig {
+    apiKey?: string;
+    styleId?: string;
+}
+
 export function shutdown() {
     let req = new XMLHttpRequest();
     try {

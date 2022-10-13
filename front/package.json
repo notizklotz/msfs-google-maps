@@ -6,6 +6,7 @@
     "lint": "prettier --check \"src/**/*.ts\""
   },
   "dependencies": {
+    "@maptiler/sdk": "^1.0.12",
     "geolocation-utils": "^1.2.5",
     "nosleep.js": "^0.12.0",
     "ol": "^7.0.0"

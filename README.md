@@ -13,7 +13,12 @@ A web application that allows to monitor your flight on an interactive map from 
 
 Features:
 - Google Maps and OpenStreetMap support
-- Displaying route with different colors indicating aircraft's altitude (inspired by [Flightradar24](https://www.flightradar24.com/))
+- Special tailor made map for Flight Simulator using Maptiler Cloud
+  - Hidpi/Retina support
+  - Latin letter labels
+  - Hills and elevation in feet
+  - Toggleable elevation contours
+- Displaying route with different colors indicating aircraft's altitude (inspired by [Flightradar24](https://www.flightradar24.com/), not supported on Maptiler map)
 - Finding and displaying airports within a specified distance from the aircraft
 
 ## How to use
@@ -36,10 +41,17 @@ If your Google Maps view is grayed out and `For development purposes only` messa
 ### Requirements
 - [Rust 1.63](https://www.rust-lang.org/tools/install)
 - [Clang](https://rust-lang.github.io/rust-bindgen/requirements.html)
-- [Node.js](https://nodejs.org)
+- [Node.js 18+](https://nodejs.org)
 
 ### Google Maps API key
-You can place your key in the server/api_key.txt file
+You can place your key in the api_key.txt file
+
+### Maptiler Cloud API key and Map ID
+An API key for [Maptiler Cloud](https://cloud.maptiler.com) has to be created. The "Free" plan is sufficient.
+
+You can place your key and change the used style ID in the [maptiler_config.json](server/maptiler_config.json) file.
+
+The source code of the preconfigured and published style is available at https://github.com/notizklotz/maptiler-flightsim-style
 
 ### Starting
 1. Inside `server` directory

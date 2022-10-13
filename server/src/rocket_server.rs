@@ -2,6 +2,7 @@ use crate::sim_connection::{Message, SimWorkerConn};
 use rocket::fs::NamedFile;
 use rocket::tokio::fs;
 use rocket::{Shutdown, State};
+use rocket::response::content;
 use serde_json::json;
 use std::path::{Path, PathBuf};
 
@@ -75,6 +76,16 @@ async fn api_key() -> String {
     key
 }
 
+#[get("/maptiler_config")]
+    async fn api_key_maptiler() -> content::RawJson<String> {
+    let config = match fs::read_to_string("./maptiler_config.json").await {
+        Ok(contents) => String::from(contents.trim()),
+        Err(_) => String::from(""),
+    };
+
+    content::RawJson(config)
+}
+
 #[get("/airports/<latitude>/<longitude>/<radius_km>")]
 fn get_airports(
     latitude: f64,
@@ -106,6 +117,7 @@ pub async fn start(conn: SimWorkerConn) {
                 shutdown,
                 position,
                 api_key,
+                api_key_maptiler,
                 position_known,
                 reset_route,
                 get_airports

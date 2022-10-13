@@ -11,6 +11,7 @@ cd ..
 cp server/target/release/server.exe dist/maps-server.exe
 cp server/Rocket.toml dist/
 cp server/SimConnect.dll dist/
+cp server/maptiler_config.json dist/
 cp -r server/assets dist/assets
 
 cd front
